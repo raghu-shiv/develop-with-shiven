@@ -8,10 +8,14 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      colors: {
+        darkKnight: {
+          primary: "#161b22",
+          secondary: "#0d1117",
+          accent: "#66fcf1",
+          text: "#f2f2f2",
+          navbarBg: "#0d111d",
+        },
       },
     },
   },
