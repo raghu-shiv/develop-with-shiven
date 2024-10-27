@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import { CartProvider } from "@/context/CartContext";
 import { CourseProvider } from "@/context/CourseContext";
 import { AuthProvider } from "@/context/AuthContext";
+import { UserProvider } from "@/context/UserContext";
 
 export const metadata: Metadata = {
   title: "Develop with Shiven",
@@ -20,16 +21,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <AuthProvider>
-          <CourseProvider>
-            <CartProvider>
-              <ClientSessionProvider>
-                <Navbar />
-                {children}
-              </ClientSessionProvider>
-            </CartProvider>
-          </CourseProvider>
-        </AuthProvider>
+        <UserProvider>
+          <AuthProvider>
+            <CourseProvider>
+              <CartProvider>
+                <ClientSessionProvider>
+                  <Navbar />
+                  {children}
+                </ClientSessionProvider>
+              </CartProvider>
+            </CourseProvider>
+          </AuthProvider>
+        </UserProvider>
       </body>
     </html>
   );
