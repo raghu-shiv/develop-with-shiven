@@ -11,7 +11,7 @@ export const fetchCourses = async (): Promise<ICourse[]> => {
   const courses = await response.json();
   return courses.map((course: ICourse) => ({
     ...course,
-    id: course.id.toString(), // Ensure id is a string
+    id: course.id ? course.id.toString() : "", // Ensure id is a string with fallback
   }));
 };
 
@@ -22,11 +22,11 @@ export const fetchCourseById = async (id: string): Promise<ICourse> => {
   if (!response.ok) {
     throw new Error(`Course with ID ${id} not found`);
   }
-  
+
   const course = await response.json();
-  
+
   return {
     ...course,
-    id: course.id.toString(),  // Ensure id is a string
+    id: course.id ? course.id.toString() : "", // Ensure id is a string with fallback
   };
 };
