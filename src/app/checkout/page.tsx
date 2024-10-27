@@ -25,6 +25,11 @@ const CheckoutPage = () => {
   }, []); // Empty dependency array ensures this runs only once on mount
 
   const handlePayment = async () => {
+    if (!userState.user) {
+      alert("Please log in to proceed with payment.");
+      return;
+    }
+
     const res = await loadRazorpayScript();
 
     if (!res) {
@@ -59,7 +64,7 @@ const CheckoutPage = () => {
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_signature: response.razorpay_signature,
             courseId: cartState.items[0].id,
-            userId: userState.user.id,
+            userId: userState.user?.id,
           }),
         }).then((res) => res.json());
 
@@ -70,8 +75,8 @@ const CheckoutPage = () => {
         }
       },
       prefill: {
-        name: userState.user.name,
-        email: userState.user.email,
+        name: userState.user?.name ?? "Guest",
+        email: userState.user?.email ?? "guest@example.com",
       },
       theme: {
         color: "#141414",
