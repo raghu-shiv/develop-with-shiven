@@ -17,23 +17,25 @@ const Courses = () => {
           <p className="text-red-500 text-center">{error}</p>
         ) : (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {courses.map((course) => (
-              <div key={course.id.toString()} className="p-4 mr-10">
-                <CourseCard
-                  price={course.price}
-                  title={course.title}
-                  description={course.description}
-                  imageUrl={course.imageUrl}
-                  id={course.id}
-                  instructor={course.author}
-                  reviews={course.reviewsCount}
-                  rating={course.rating}
-                  duration=""
-                  lectures={0}
-                  level=""
-                />
-              </div>
-            ))}
+            {courses
+              .filter((course) => course.id !== undefined) // Ensure course.id exists
+              .map((course) => (
+                <div key={course.id!.toString()} className="p-4 mr-10">
+                  <CourseCard
+                    price={course.price}
+                    title={course.title}
+                    description={course.description}
+                    imageUrl={course.imageUrl}
+                    id={course.id || ""}
+                    instructor={course.author || "Unknown Instructor"}
+                    reviews={course.reviewsCount || 0}
+                    rating={course.rating || 0}
+                    duration=""
+                    lectures={0}
+                    level=""
+                  />
+                </div>
+              ))}
           </div>
         )}
       </div>

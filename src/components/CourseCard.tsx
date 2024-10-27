@@ -9,11 +9,17 @@ import getUserCurrency from "@/services/currrencyService";
 import { currencyData } from "@/data/currencyData";
 
 interface CourseCardProps {
-  id: string;
+  id?: string;
   title: string;
   description: string;
   imageUrl: string;
   price: number;
+  instructor: string;
+  reviews: number;
+  rating: number;
+  duration: string;
+  lectures: number;
+  level: string;
 }
 
 export function CourseCard({
