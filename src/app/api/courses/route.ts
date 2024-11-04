@@ -3,7 +3,7 @@ import Course from "@/models/course";
 import dbConnect from "@/lib/mongodb";
 
 export async function GET() {
-  console.log("GET /api/courses called");
+  // console.log("GET /api/courses called");
   await dbConnect();
 
   try {
@@ -21,18 +21,10 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  console.log("POST /api/courses called");
+  // console.log("POST /api/courses called");
   await dbConnect();
 
   try {
-    // const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-    // console.log('Token:', token);
-
-    // if (!token) {
-    //   console.log('Unauthorized access');
-    //   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    // }
-
     const {
       title,
       description,

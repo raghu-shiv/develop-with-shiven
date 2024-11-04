@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const secretKey = process.env.NEXT_PUBLIC_RECAPTCHA_SECRET_KEY; // Ensure this is set in .env
+    const secretKey = process.env.RECAPTCHA_SECRET_KEY; // Ensure this is set in .env
     const verificationURL = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${recaptchaToken}`;
 
     const response = await axios.post(verificationURL);
