@@ -1,22 +1,28 @@
 import { motion } from "framer-motion";
 
 const testimonials = [
-  { name: "John Doe", content: "This platform has transformed my career!" },
   {
-    name: "Jane Smith",
-    content: "I love the flexibility and the content quality.",
+    name: "Jaehyuk L.",
+    content:
+      "Really appreciated the succinct explanations of the underlying concepts",
   },
   {
-    name: "Alice Johnson",
-    content: "The best decision I made for my personal growth.",
+    name: "Arbo Z.",
+    content:
+      "So far so good - seems to be providing me exactly with the skills I have been looking to develop",
   },
   {
-    name: "Robert Brown",
-    content: "Incredible learning experience with top-notch content!",
+    name: "Penelope M.",
+    content: "Great graphics, great content, great explanations",
   },
   {
-    name: "Emma Wilson",
-    content: "Highly recommend this platform for skill development.",
+    name: "James S.",
+    content:
+      "This is my first time taking a course in express.js and I am very happy with how it is going because I thought it was going to be dense. However, I am understanding the content as it is clearly explained and sets me up for success.",
+  },
+  {
+    name: "Chiara R.",
+    content: "great tutorials",
   },
 ];
 
