@@ -22,33 +22,37 @@ export default function SignIn() {
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const router = useRouter();
 
-  const RECAPTCHA_SITE_KEY = process.env.RECAPTCHA_SITE_KEY || "";
+  const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "";
 
   useEffect(() => {
     // Load reCAPTCHA v2 script
     const loadRecaptcha = () => {
-      const script = document.createElement("script");
-      script.src = `https://www.google.com/recaptcha/api.js`;
-      script.async = true;
-      script.defer = true;
-      document.body.appendChild(script);
+      if (!document.querySelector("#recaptcha-script")) {
+        const script = document.createElement("script");
+        script.src = `https://www.google.com/recaptcha/api.js`;
+        script.async = true;
+        script.defer = true;
+        script.id = "recaptcha-script";
 
-      script.onload = () => {
-        // Ensure grecaptcha is ready
-        if (window.grecaptcha) {
-          window.grecaptcha.ready(() => {
-            // Render the reCAPTCHA widget once grecaptcha is ready
-            window.grecaptcha.render("recaptcha-container", {
-              sitekey: RECAPTCHA_SITE_KEY, // Replace with your reCAPTCHA v2 site key
-              callback: (token: string) => setRecaptchaToken(token), // Set token on successful completion
+        document.body.appendChild(script);
+
+        script.onload = () => {
+          // Ensure grecaptcha is ready
+          if (window.grecaptcha) {
+            window.grecaptcha.ready(() => {
+              // Render the reCAPTCHA widget once grecaptcha is ready
+              window.grecaptcha.render("recaptcha-container", {
+                sitekey: RECAPTCHA_SITE_KEY as string, // Replace with your reCAPTCHA v2 site key
+                callback: (token: string) => setRecaptchaToken(token), // Set token on successful completion
+              });
             });
-          });
-        }
-      };
+          }
+        };
+      }
     };
 
     loadRecaptcha();
-  }, [RECAPTCHA_SITE_KEY]);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
