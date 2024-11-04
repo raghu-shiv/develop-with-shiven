@@ -3,39 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
-
-const courses = [
-  {
-    id: 1,
-    title: "Mastering React",
-    instructor: "John Doe",
-    rating: 4.8,
-    imageUrl: "/course-image.png",
-  },
-  {
-    id: 2,
-    title: "Advanced Node.js",
-    instructor: "Jane Smith",
-    rating: 4.7,
-    imageUrl: "/course-image.png",
-  },
-  {
-    id: 3,
-    title: "Fullstack Development",
-    instructor: "James Bond",
-    rating: 4.9,
-    imageUrl: "/course-image.png",
-  },
-  {
-    id: 4,
-    title: "Python Microservices",
-    instructor: "James Bond",
-    rating: 4.9,
-    imageUrl: "/course-image.png",
-  },
-];
+import { useCourseContext } from "@/context/CourseContext";
 
 export default function FeaturedCourses() {
+  const { courses, error } = useCourseContext(); // Access courses and error from context
+
   const fadeInVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
@@ -141,7 +113,7 @@ export default function FeaturedCourses() {
                 {/* Text Section */}
                 <div className="md:w-1/2 pr-4">
                   <h3 className="text-xl font-bold mb-2">{course.title}</h3>
-                  <p className="mb-4">By {course.instructor}</p>
+                  <p className="mb-4">By {course.author}</p>
                   <p className="text-yellow-400 mb-4">
                     Rating: {course.rating} ★
                   </p>
