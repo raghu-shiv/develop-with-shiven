@@ -27,7 +27,7 @@ const Register = () => {
         if (window.grecaptcha) {
           window.grecaptcha.ready(() => {
             window.grecaptcha.render("recaptcha-container", {
-              sitekey: process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "", // Replace with your reCAPTCHA site key
+              sitekey: process.env.RECAPTCHA_SITE_KEY || "", // Replace with your reCAPTCHA site key
               callback: (token: string) => setRecaptchaToken(token), // Set token on successful completion
             });
           });

@@ -22,7 +22,7 @@ export default function SignIn() {
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const router = useRouter();
 
-  const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "";
+  const RECAPTCHA_SITE_KEY = process.env.RECAPTCHA_SITE_KEY || "";
 
   useEffect(() => {
     // Load reCAPTCHA v2 script
