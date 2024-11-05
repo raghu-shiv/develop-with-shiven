@@ -16,32 +16,34 @@ const options = {
         // Connect to the database
         await dbConnect();
 
-        // Find user by email
-        const user = await User.findOne({ email: credentials?.email });
+        try {
+          const user = await User.findOne({ email: credentials?.email });
 
-        if (!user) {
-          // No user found
+          if (!user) {
+            throw new Error("No user found with this email");
+          }
+
+          // Compare the provided password with the hashed password
+          const isPasswordValid = await bcrypt.compare(
+            credentials?.password,
+            user.password
+          );
+
+          if (!isPasswordValid) {
+            throw new Error("Invalid password");
+          }
+
+          // Return the user with the correct type and role (e.g., "learner" or "instructor")
+          return {
+            id: user.id, // Cast MongoDB ObjectId to string
+            name: user.name,
+            email: user.email,
+            role: user.role, // Return the actual role, either "learner" or "instructor"
+          };
+        } catch (error) {
+          console.error("Authorization error:", error);
           return null;
         }
-
-        // Compare the provided password with the hashed password
-        const isPasswordValid = await bcrypt.compare(
-          credentials?.password,
-          user.password
-        );
-
-        if (!isPasswordValid) {
-          // Invalid password
-          return null;
-        }
-
-        // Return the user with the correct type and role (e.g., "learner" or "instructor")
-        return {
-          id: user.id, // Cast MongoDB ObjectId to string
-          name: user.name,
-          email: user.email,
-          role: user.role, // Return the actual role, either "learner" or "instructor"
-        };
       },
     }),
   ],

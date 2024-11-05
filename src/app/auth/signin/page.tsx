@@ -42,7 +42,7 @@ export default function SignIn() {
             window.grecaptcha.ready(() => {
               // Render the reCAPTCHA widget once grecaptcha is ready
               window.grecaptcha.render("recaptcha-container", {
-                sitekey: RECAPTCHA_SITE_KEY as string, // Replace with your reCAPTCHA v2 site key
+                sitekey: RECAPTCHA_SITE_KEY, // Replace with your reCAPTCHA v2 site key
                 callback: (token: string) => setRecaptchaToken(token), // Set token on successful completion
               });
             });
@@ -78,17 +78,13 @@ export default function SignIn() {
       return;
     }
 
-    const res = await signIn("credentials", {
+    const res = await signIn("Credentials", {
       redirect: false,
       email,
       password,
     });
 
-    if (res?.error) {
-      setError(res.error);
-    } else {
-      router.push("/");
-    }
+    res?.error ? setError(res.error) : router.push("/");
   };
 
   return (
@@ -138,7 +134,7 @@ export default function SignIn() {
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-darkKnight-accent"
+                className="w-full p-2 border border-gray-300 text-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-darkKnight-accent"
                 required
               />
               {/* Move Forgot Password link here */}
@@ -162,7 +158,7 @@ export default function SignIn() {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-darkKnight-accent"
+                className="w-full p-2 border border-gray-300 text-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-darkKnight-accent"
                 required
               />
             </div>
