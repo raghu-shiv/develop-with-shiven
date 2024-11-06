@@ -51,11 +51,13 @@ const options = {
     async session({ session, token }: { session: any; token: any }) {
       session.user.role = token.role;
       session.user.id = token.sub; // Attach the user ID to the session
+      session.accessToken = token.accessToken; // Pass accessToken to the session for client-side use
       return session;
     },
     async jwt({ token, user }: { token: any; user?: any }) {
       if (user) {
         token.role = user.role;
+        token.accessToken = generateAccessToken(user); // Add an access token (generated here) to the token
       }
       return token;
     },
@@ -66,6 +68,12 @@ const options = {
     error: "/auth/error", // Optional error page
   },
 };
+
+// Generate an access token (for example purposes, return user ID)
+function generateAccessToken(user: any) {
+  // Here, you could add logic to generate a secure token
+  return user.id; // For now, using user ID as token. Replace with actual logic.
+}
 
 const handler = NextAuth(options);
 

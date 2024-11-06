@@ -1,3 +1,5 @@
+//File: src/models/enrollment.ts
+
 import mongoose, { Document, Model, Schema } from "mongoose";
 
 export interface IEnrollment extends Document {

@@ -1,9 +1,12 @@
+//File: src/app/user/profile/page.tsx
+
 "use client";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Layout from "@/components/Layout";
+import { useSession } from "next-auth/react"; // Use next-auth/react for client-side session handling
 
 interface Course {
   id: string;
@@ -16,6 +19,7 @@ interface Enrollment {
 }
 
 const UserProfile = () => {
+  const { data: session } = useSession(); // Access the session, includes token if logged in
   const [user, setUser] = useState(null);
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [name, setName] = useState("");
@@ -29,62 +33,83 @@ const UserProfile = () => {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const MAX_RETRIES = 3;
-      let attempt = 0;
+      if (!session || session.accessToken) {
+        router.push("/login"); // Redirect if not logged in
+        return;
+      }
 
-      while (attempt < MAX_RETRIES) {
-        try {
-          const res = await axios.get("/api/user/profile");
-          const data = await res.data;
-          console.log(data);
+      try {
+        const res = await axios.get("/api/user/profile", {
+          headers: { Authorization: `Bearer ${session.accessToken}` }, // Add token if available
+        });
+        const data = res.data;
 
-          setUser(data.user);
-          setEnrollments(data.enrollments);
-          setName(data.user.name);
-          setAge(data.user.age);
-          setGender(data.user.gender);
-          setLocation(data.user.location);
-        } catch (error: any) {
-          if (error.code === "ECONNRESET" && attempt < MAX_RETRIES - 1) {
-            console.log(`Retrying... Attempt ${attempt + 1}`);
-            attempt++;
-            continue;
-          }
-          throw new Error(`Error fetching courses: ${error.message}`);
+        setUser(data.user);
+        setEnrollments(data.enrollments);
+        setName(data.user.name);
+        setAge(data.user.age);
+        setGender(data.user.gender);
+        setLocation(data.user.location);
+      } catch (error: any) {
+        console.error("Error fetching profile data:", error);
+        if (error.response && error.response.status === 401) {
+          alert("You are not authorized to view this page. Please log in.");
+          router.push("/login");
         }
       }
     };
-    fetchProfile().catch(console.error);
-  }, []);
+
+    fetchProfile();
+  }, [session]);
 
   const handleUpdateProfile = async () => {
-    const res = await fetch("/api/user/update", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name, age, gender, location }),
-    });
+    if (!session?.accessToken) {
+      alert("You must be logged in to update profile.");
+      return;
+    }
+    try {
+      const res = await fetch("/api/user/update", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.accessToken}`,
+        },
+        body: JSON.stringify({ name, age, gender, location }),
+      });
 
-    if (res.ok) {
-      alert("Profile updated successfully!");
-    } else {
+      if (res.ok) {
+        alert("Profile updated successfully!");
+      } else {
+        alert("Failed to update profile");
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
       alert("Failed to update profile");
     }
   };
 
   const handleResetPassword = async () => {
-    const res = await fetch("/api/user/reset-password", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ currentPassword, newPassword }),
-    });
+    if (!session?.accessToken) {
+      alert("You must be logged in to reset password.");
+      return;
+    }
+    try {
+      const res = await fetch("/api/user/reset-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.accessToken}`,
+        },
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
 
-    if (res.ok) {
-      alert("Password updated successfully!");
-    } else {
+      if (res.ok) {
+        alert("Password updated successfully!");
+      } else {
+        alert("Failed to update password");
+      }
+    } catch (error) {
+      console.error("Error resetting password:", error);
       alert("Failed to update password");
     }
   };
